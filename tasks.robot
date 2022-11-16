@@ -79,3 +79,9 @@ Save created files in an Archive and cleanup
     Archive Folder With Zip    ${OUTPUT_DIR}${/}receipts    ${OUTPUT_DIR}${/}Receipts.zip
     Remove Directory    ${OUTPUT_DIR}${/}receipts    recursive=${True}
     Remove File    orders.csv
+
+Vault thing
+    No Operation
+
+Dialog thing
+    No Operation
