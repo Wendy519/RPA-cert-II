@@ -4,7 +4,10 @@
 </head>
 
 <body>
+
     <pre>{{receipt}}</pre>
+    <br>
+    <h2>{{usermsg}}</h2>
         <br>
         <p><img src="{{image}}" width="200"/></p>
   

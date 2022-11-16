@@ -1,19 +1,26 @@
 *** Settings ***
-Documentation       Enter orders and store copies in PDF format archived in zip
+Documentation       Get orders from CSV files
+...                 Enter them into the web form
+...                 save the results, with picture of robot to PDF
+...                 Archive the resulting pdf files
 
 Library             RPA.Browser.Selenium
 Library             RPA.HTTP
 Library             RPA.PDF
 Library             RPA.Archive
 Library             RPA.FileSystem
-Library             Dialogs
 Library             RPA.Tables
 Library             RPA.RobotLogListener
+Library             RPA.Robocorp.Vault
+Library             RPA.Dialogs
+Library             String
+Library             OperatingSystem
 
 
 *** Tasks ***
 Enter orders and store copies in PDF format
     Download csv of order info
+    Save user input for message    $usermsg
     Open ordering website
     Enter sales data in form
     Save created files in an Archive and cleanup
@@ -21,7 +28,22 @@ Enter orders and store copies in PDF format
 
 *** Keywords ***
 Download csv of order info
-    Download    https://robotsparebinindustries.com/orders.csv
+    ${download-url}=    Get Secret    downloadfile
+    Download    ${download-url}[url]
+
+Get custom message from user
+    Add heading    Add a custom message to receipts
+    Add text input    message
+    ...    label=message
+    ...    rows=5
+    ...    placeholder=Enter your message here
+    ${receipt}=    Run dialog
+    RETURN    ${receipt.message}
+
+Save user input for message
+    [Arguments]    ${usermsg}
+    ${usermsg}=    Get custom message from user
+    Create File    ${OUTPUT_DIR}${/}custom-message.txt    ${usermsg}
 
 Open ordering website
     Open Available Browser    https://robotsparebinindustries.com/#/robot-order
@@ -53,11 +75,13 @@ Save order to PDF
     ${receiptnum}=    Get Text    css:.badge-success
     ${receipt}=    Get Element Attribute    id:receipt    outerHTML
     ${image}=    Set Variable    ${OUTPUT_DIR}${/}files${/}robot.png
+    ${usermsg}=    Get File    ${OUTPUT_DIR}${/}custom-message.txt
     ${TEMPLATE}=    Set Variable    devdata/receipt.template
     ${PDF}=    Set Variable    ${OUTPUT_DIR}${/}receipts${/}${receiptnum}.pdf
     ${DATA}=    Create Dictionary
     ...    receipt=${receipt}
     ...    image=${image}
+    ...    usermsg=${usermsg}
     Template HTML To PDF
     ...    template=${TEMPLATE}
     ...    output_path=${PDF}
@@ -77,11 +101,6 @@ Enter sales data in form
 
 Save created files in an Archive and cleanup
     Archive Folder With Zip    ${OUTPUT_DIR}${/}receipts    ${OUTPUT_DIR}${/}Receipts.zip
-    Remove Directory    ${OUTPUT_DIR}${/}receipts    recursive=${True}
-    Remove File    orders.csv
-
-Vault thing
-    No Operation
-
-Dialog thing
-    No Operation
+    RPA.FileSystem.Remove Directory    ${OUTPUT_DIR}${/}receipts    recursive=${True}
+    RPA.FileSystem.Remove File    orders.csv
+    RPA.FileSystem.Remove File    ${OUTPUT_DIR}${/}custom-message.txt

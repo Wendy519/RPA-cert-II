@@ -18,16 +18,7 @@ Upload the robot code to Control Room.
 Run the robot as an assistant
 Using Robot Assistants in Control Room.
 
-21: Read some data from a vault
-Another requirement was to read some data from a vault. Modify the robot so that it reads some data from a local vault file. Store the vault file in the robot project so that it does not require manual setup.
 
-The best practice is to store the vault file outside the robot project, but in this case, we make an exception since we do not want you to store sensitive data in the vault. We just want to see that you know how to access the vault and read some data!
-
-Hints
-
-Maybe store the URL of the robot order website in the vault?
-22: Publish your robot in a public GitHub repository
-Create a public GitHub repository for your robot and push it there.
 
 23: Verify that it is possible to run your robot without manual setup
 Make sure your robot works out-of-the-box just by getting it from the GitHub repository. For example, the vault should be configured so that the robot finds it without manual setup.
