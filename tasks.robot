@@ -16,7 +16,7 @@ Enter orders and store copies in PDF format
     Download csv of order info
     Open ordering website
     Enter sales data in form
-    Save created files in an Archive
+    Save created files in an Archive and cleanup
 
 
 *** Keywords ***
@@ -75,6 +75,7 @@ Enter sales data in form
         Order Another
     END
 
-Save created files in an Archive
+Save created files in an Archive and cleanup
     Archive Folder With Zip    ${OUTPUT_DIR}${/}receipts    ${OUTPUT_DIR}${/}Receipts.zip
     Remove Directory    ${OUTPUT_DIR}${/}receipts    recursive=${True}
+    Remove File    orders.csv
