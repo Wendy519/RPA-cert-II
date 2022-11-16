@@ -1,0 +1,12 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <pre>{{receipt}}</pre>
+        <br>
+        <p><img src="{{image}}" width="200"/></p>
+  
+
+</body>
