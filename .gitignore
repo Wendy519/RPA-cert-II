@@ -16,3 +16,8 @@ testrun/*
 .~lock*
 *.pkl
 orders.csv
+output/Receipts.zip
+output/Receipts.zip
+output/stdout.log
+output/log.html
+output/output.xml
